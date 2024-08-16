@@ -1,0 +1,5 @@
+html[data-theme='dark'] {
+    color: #ffffff;
+    background-color: #121212;
+    --accent: #1A936F;
+}
