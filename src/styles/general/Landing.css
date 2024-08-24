@@ -1,0 +1,16 @@
+.typewriter {
+    color: var(--text);
+    font-size: 2rem;
+    margin-top: -1rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1em;
+    color: var(--accent); 
+}
+
+.scroll-arrow {
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    padding: 0.1em;
+}

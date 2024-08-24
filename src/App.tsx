@@ -1,37 +1,45 @@
-import './styles/general.css'
-
-/*
-  Function to change the theme. We need to edit general styles, such as the
-  text and background colors, some accent colors, styles for individual 
-  components, and the favicon. We can do most of this by just changing the
-  'data-theme' attribute of the <hrml> tag.
-
-  To change the favicon, all we do is change the 'href' attribute of the
-  <link> tag with id 'favicon'.
+import './styles/general/general.css'
+import './components/Navbar'
+import Navbar from './components/Navbar'
+import Landing from './components/Landing'
+/* TODO
+  1. Update the about, projects, and contact sections
+  2. Add background animation for each section
 */
 
-function change_theme() {
-  const html = document.getElementsByTagName('html')[0]
-  const theme = html.getAttribute('data-theme')
-  const favicon = document.querySelector('link[rel="icon"]')
-
-  if (theme === 'light') {
-    html.setAttribute('data-theme', 'dark')
-    favicon?.setAttribute('href', './src/assets/images/monogram-dark-theme.svg')
-  } else {
-    html.setAttribute('data-theme', 'light')
-    favicon?.setAttribute('href','./src/assets/images/monogram-light-theme.svg')
-  }
-}
+import About from './components/About'
+import Projects from './components/Projects'
+import Contact from './components/Contact'
+import { useState, useEffect } from 'react'
 
 function App() {
+
+// Initialize state with the current theme
+  const [theme, setTheme] = useState(
+    document.getElementsByTagName('html')[0].getAttribute('data-theme')
+  );
+
+// Update the theme attribute of the html tag when theme changes
+  useEffect(() => {
+    document.getElementsByTagName('html')[0].setAttribute('data-theme', theme!);
+  }, [theme]);
+
+
   return (
     <>
-      <h1>Hey, I'm Teja.</h1>
-      <p>HERMES: My personal website, but clean & minimalistic this time.</p>
-      <hr />
-      <br />
-      <button onClick={change_theme}>Change Theme</button>
+      <Navbar current_mode={theme!} setTheme={setTheme} />
+      <div id = "landing-page">
+        <Landing  current_mode={theme!} />
+      </div>
+      <div id = "about-page">
+        <About />
+      </div>
+      <div id = "projects-page">
+        <Projects />
+      </div>
+      <div id = "contact-page">
+        <Contact />
+      </div>
     </>
   )
 }
