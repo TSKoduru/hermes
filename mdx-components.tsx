@@ -21,7 +21,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         </figure>
       )
     },
-    code: ({ children, ...props }: ComponentPropsWithoutRef<'code'>) => {
+    code: ({ children, ...props }: ComponentPropsWithoutRef) => {
       const codeHTML = highlight(children as string)
       return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
     },

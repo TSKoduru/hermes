@@ -36,7 +36,7 @@ export type TextEffectProps = {
   style?: React.CSSProperties
 }
 
-const defaultStaggerTimes: Record<PerType, number> = {
+const defaultStaggerTimes: Record = {
   char: 0.03,
   word: 0.05,
   line: 0.1,
@@ -63,10 +63,7 @@ const defaultItemVariants: Variants = {
   exit: { opacity: 0 },
 }
 
-const presetVariants: Record<
-  PresetType,
-  { container: Variants; item: Variants }
-> = {
+const presetVariants: Record = {
   blur: {
     container: defaultContainerVariants,
     item: {
@@ -109,52 +106,49 @@ const presetVariants: Record<
   },
 }
 
-const AnimationComponent: React.FC<{
-  segment: string
-  variants: Variants
-  per: 'line' | 'word' | 'char'
-  segmentWrapperClassName?: string
-}> = React.memo(({ segment, variants, per, segmentWrapperClassName }) => {
-  const content =
-    per === 'line' ? (
-      <motion.span variants={variants} className="block">
-        {segment}
-      </motion.span>
-    ) : per === 'word' ? (
-      <motion.span
-        aria-hidden="true"
-        variants={variants}
-        className="inline-block whitespace-pre"
-      >
-        {segment}
-      </motion.span>
-    ) : (
-      <motion.span className="inline-block whitespace-pre">
-        {segment.split('').map((char, charIndex) => (
-          <motion.span
-            key={`char-${charIndex}`}
-            aria-hidden="true"
-            variants={variants}
-            className="inline-block whitespace-pre"
-          >
-            {char}
-          </motion.span>
-        ))}
-      </motion.span>
+const AnimationComponent: React.FC = React.memo(
+  ({ segment, variants, per, segmentWrapperClassName }) => {
+    const content =
+      per === 'line' ? (
+        <motion.span variants={variants} className="block">
+          {segment}
+        </motion.span>
+      ) : per === 'word' ? (
+        <motion.span
+          aria-hidden="true"
+          variants={variants}
+          className="inline-block whitespace-pre"
+        >
+          {segment}
+        </motion.span>
+      ) : (
+        <motion.span className="inline-block whitespace-pre">
+          {segment.split('').map((char, charIndex) => (
+            <motion.span
+              key={`char-${charIndex}`}
+              aria-hidden="true"
+              variants={variants}
+              className="inline-block whitespace-pre"
+            >
+              {char}
+            </motion.span>
+          ))}
+        </motion.span>
+      )
+
+    if (!segmentWrapperClassName) {
+      return content
+    }
+
+    const defaultWrapperClassName = per === 'line' ? 'block' : 'inline-block'
+
+    return (
+      <span className={cn(defaultWrapperClassName, segmentWrapperClassName)}>
+        {content}
+      </span>
     )
-
-  if (!segmentWrapperClassName) {
-    return content
-  }
-
-  const defaultWrapperClassName = per === 'line' ? 'block' : 'inline-block'
-
-  return (
-    <span className={cn(defaultWrapperClassName, segmentWrapperClassName)}>
-      {content}
-    </span>
-  )
-})
+  },
+)
 
 AnimationComponent.displayName = 'AnimationComponent'
 

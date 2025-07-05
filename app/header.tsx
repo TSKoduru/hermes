@@ -23,29 +23,20 @@ export function Header() {
         </TextEffect>
 
         {/* Resume Link */}
-        
         <a
-        href="/TKoduru_Resume.pdf"
-        download
-        className="mt-2 inline-block transition hover:text-zinc-900 dark:hover:text-white"
-      >
-        <TextEffect
-          as="span"
-          preset="fade"
-          per="char"
-          className="text-sm text-zinc-700 dark:text-zinc-400"
-          delay={0.75}
+          href="/TKoduru_Resume.pdf"
+          download
+          rel="noopener noreferrer"
+          className="mt-2 inline-block text-sm text-zinc-700 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
         >
           Download Resume →
-        </TextEffect>
-      </a>
-
+        </a>
       </div>
 
       {/* Right: Profile Image */}
       <div className="ml-4 hidden sm:block">
         <Image
-          src="/pfp.jpg"
+          src="/pfp.png"
           alt="Teja Koduru"
           width={64}
           height={64}

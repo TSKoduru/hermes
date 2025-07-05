@@ -23,7 +23,7 @@ export function TextMorph({
   const uniqueId = useId()
 
   const characters = useMemo(() => {
-    const charCounts: Record<string, number> = {}
+    const charCounts: Record = {}
 
     return children.split('').map((char, index) => {
       const lowerChar = char.toLowerCase()

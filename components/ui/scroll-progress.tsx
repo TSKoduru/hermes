@@ -7,7 +7,7 @@ import { RefObject } from 'react'
 export type ScrollProgressProps = {
   className?: string
   springOptions?: SpringOptions
-  containerRef?: RefObject<HTMLDivElement>
+  containerRef?: RefObject
 }
 
 const DEFAULT_SPRING_OPTIONS: SpringOptions = {

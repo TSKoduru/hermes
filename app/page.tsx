@@ -5,14 +5,14 @@ import { Magnetic } from '@/components/ui/magnetic'
 import Link from 'next/link'
 import { AnimatedBackground } from '@/components/ui/animated-background'
 import {
-  PROJECTS,
   WORK_EXPERIENCE,
   BLOG_POSTS,
   EMAIL,
   SOCIAL_LINKS,
 } from './data'
-import ProjectsCarousel from '../components/ui/ProjectsCarousel';
-import PhotoCarousel from '../components/ui/PhotoCarousel';
+import ProjectsCarousel from '../components/ui/ProjectsCarousel'
+import PhotoCarousel from '../components/ui/PhotoCarousel'
+import FloatingLeafSpawner from '../components/ui/FloatingLeafSpawner'
 
 const VARIANTS_CONTAINER = {
   hidden: { opacity: 0 },
@@ -32,7 +32,6 @@ const VARIANTS_SECTION = {
 const TRANSITION_SECTION = {
   duration: 0.3,
 }
-
 
 function MagneticSocialLink({
   children,
@@ -87,14 +86,13 @@ export default function Personal() {
           </h3>
         </div>
       </motion.section>
-
+      <FloatingLeafSpawner />
       <motion.section
         variants={VARIANTS_SECTION}
         transition={TRANSITION_SECTION}
       >
         <h3 className="mb-5 text-lg font-medium">Selected Projects</h3>
         <ProjectsCarousel />
-
       </motion.section>
 
       <motion.section
@@ -105,7 +103,7 @@ export default function Personal() {
         <div className="flex flex-col space-y-2">
           {WORK_EXPERIENCE.map((job) => (
             <a
-              className="relative overflow-hidden rounded-2xl bg-zinc-300/30 p-[1px] dark:bg-zinc-600/30"
+              className="relative transform overflow-hidden rounded-2xl bg-zinc-300/30 p-[1px] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl dark:bg-zinc-600/30"
               href={job.link}
               target="_blank"
               rel="noopener noreferrer"
@@ -172,14 +170,14 @@ export default function Personal() {
       </motion.section>
 
       <motion.section
-      variants={VARIANTS_SECTION}
-      transition={TRANSITION_SECTION}
-    >
-      <h3 className="mb-5 text-lg font-medium">Photography</h3>
-      <PhotoCarousel />
-    </motion.section>
+        variants={VARIANTS_SECTION}
+        transition={TRANSITION_SECTION}
+      >
+        <h3 className="mb-5 text-lg font-medium">Photography</h3>
+        <PhotoCarousel />
+      </motion.section>
 
-    <motion.section
+      <motion.section
         variants={VARIANTS_SECTION}
         transition={TRANSITION_SECTION}
       >
@@ -198,7 +196,6 @@ export default function Personal() {
           ))}
         </div>
       </motion.section>
-      
     </motion.main>
   )
 }

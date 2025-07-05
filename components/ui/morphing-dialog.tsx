@@ -23,9 +23,9 @@ import useClickOutside from '@/hooks/useClickOutside'
 
 export type MorphingDialogContextType = {
   isOpen: boolean
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsOpen: React.Dispatch
   uniqueId: string
-  triggerRef: React.RefObject<HTMLDivElement>
+  triggerRef: React.RefObject
 }
 
 const MorphingDialogContext =
@@ -88,7 +88,7 @@ export type MorphingDialogTriggerProps = {
   children: React.ReactNode
   className?: string
   style?: React.CSSProperties
-  triggerRef?: React.RefObject<HTMLDivElement>
+  triggerRef?: React.RefObject
 }
 
 function MorphingDialogTrigger({
