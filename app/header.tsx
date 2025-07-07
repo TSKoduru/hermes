@@ -19,7 +19,7 @@ export function Header() {
           className="text-zinc-600 dark:text-zinc-500"
           delay={0.5}
         >
-          Aerospace | Computer Engineering | Math
+          Aerospace Engineering | Computer Engineering | Math
         </TextEffect>
 
         {/* Resume Link */}
@@ -40,7 +40,7 @@ export function Header() {
           alt="Teja Koduru"
           width={64}
           height={64}
-          className="rounded-full object-cover shadow-md ring-1 ring-zinc-200 dark:ring-zinc-700"
+          className="rounded-full object-cover ring-1 shadow-md ring-zinc-200 dark:ring-zinc-700"
         />
       </div>
     </header>

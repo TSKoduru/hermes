@@ -4,15 +4,11 @@ import { Spotlight } from '@/components/ui/spotlight'
 import { Magnetic } from '@/components/ui/magnetic'
 import Link from 'next/link'
 import { AnimatedBackground } from '@/components/ui/animated-background'
-import {
-  WORK_EXPERIENCE,
-  BLOG_POSTS,
-  EMAIL,
-  SOCIAL_LINKS,
-} from './data'
+import { WORK_EXPERIENCE, BLOG_POSTS, EMAIL, SOCIAL_LINKS } from './data'
 import ProjectsCarousel from '../components/ui/ProjectsCarousel'
 import PhotoCarousel from '../components/ui/PhotoCarousel'
 import FloatingLeafSpawner from '../components/ui/FloatingLeafSpawner'
+import NowListening from '@/components/ui/nowlistening'
 
 const VARIANTS_CONTAINER = {
   hidden: { opacity: 0 },
@@ -175,6 +171,13 @@ export default function Personal() {
       >
         <h3 className="mb-5 text-lg font-medium">Photography</h3>
         <PhotoCarousel />
+      </motion.section>
+
+      <motion.section
+        variants={VARIANTS_SECTION}
+        transition={TRANSITION_SECTION}
+      >
+        <NowListening />
       </motion.section>
 
       <motion.section
