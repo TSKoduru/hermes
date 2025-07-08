@@ -92,7 +92,7 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     title: 'Software/Controls Intern',
     start: 'May 2025',
     end: 'Present',
-    link: '/experience/MITLL/',
+    link: 'https://www.ll.mit.edu/',
     id: 'work1',
   },
   {
@@ -100,7 +100,7 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     title: 'Software/Avionics Intern',
     start: 'January 2025',
     end: 'May 2025',
-    link: '/experience/SpaceX/',
+    link: 'https://www.spacex.com/',
     id: 'work2',
   },
   {
@@ -108,35 +108,17 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     title: 'Software Engineering Intern',
     start: 'June 2024',
     end: 'September 2024',
-    link: '/experience/Kitware/',
+    link: 'https://www.kitware.com/',
     id: 'work3',
   },
 ]
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    title: "There's so much to learn",
-    description: "but it feels like there's no time",
-    link: '/blog/learning-new-things',
-    uid: 'blog-0',
-  },
-  {
-    title: 'Not being boring',
-    description: '(my journey getting cool hobbies to talk about)',
-    link: '/blog/not-being-boring',
-    uid: 'blog-1',
-  },
-  {
-    title: "Feeling like you're getting older",
-    description: "and yet I'm not even 20?",
-    link: '/blog/getting-older',
-    uid: 'blog-2',
-  },
-  {
-    title: 'Why I made this blog',
+    title: 'Why write?',
     description: '(Short version: I hopped on the bandwagon)',
-    link: '/blog/getting-older',
-    uid: 'blog-2',
+    link: '/blog/why-blog',
+    uid: 'blog-1',
   },
 ]
 
