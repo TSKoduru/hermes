@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+import SignalTrace from '../components/SignalTrace.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .sort((a, b) => (a.data.date < b.data.date ? 1 : -1))
+  .slice(0, 3);
+
+const featuredProjects = [
+  { name: 'DIALGA',   type: 'hardware · PCB',        desc: 'A binary watch PCB. Custom schematic, hand-routed traces, ENIG finish. Worn daily.',                         lang: 'KiCad · C',       href: 'https://github.com/TSKoduru/DIALGA' },
+  { name: 'Celestia', type: 'software · simulation',  desc: 'N-body gravitational simulator with real orbital mechanics and Barnes-Hut tree optimization.',                lang: 'Python · NumPy',  href: 'https://github.com/TSKoduru/NBodySimulation' },
+  { name: 'Gamehawk', type: 'software · CV',          desc: 'Automated Word Hunt solver using computer vision and graph search. Real-time.',                               lang: 'Python · OpenCV', href: 'https://github.com/TSKoduru/gamehawk' },
+];
+
+const experience = [
+  { date: '2025 → now',   role: 'Software / Controls Intern',  company: 'MIT Lincoln Laboratory', detail: 'Advanced defense research. Controls and embedded systems.' },
+  { date: 'Jan–May 2025', role: 'Software / Avionics Intern',  company: 'SpaceX',                 detail: 'Flight software and avionics systems for orbital launch vehicles.' },
+  { date: 'Summer 2024',  role: 'Software Engineering Intern', company: 'Kitware',                detail: 'Open-source scientific computing and visualization toolkits.' },
+];
+---
+
+<Base>
+  <div style="position:relative;background:var(--cream);">
+    <GridBackground />
+
+    <!-- ── Hero ── -->
+    <section style="padding:52px 40px 44px;position:relative;z-index:1;">
+      <SignalTrace />
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;">
+        CE + Aerospace · Maker · Builder
+      </p>
+      <h1 class="serif" style="font-size:clamp(42px,7vw,68px);color:var(--ink);font-weight:400;line-height:1.05;letter-spacing:-1px;margin-bottom:20px;">
+        Teja<br />Koduru
+      </h1>
+      <p style="font-family:var(--font-mono);font-size:14px;color:var(--muted);max-width:480px;line-height:1.75;margin-bottom:28px;">
+        I build things that fly, think, and blink. From PCB traces to orbital mechanics — if it can be engineered, I want to understand it.
+      </p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;">
+        {['avionics', 'PCB design', 'astrodynamics', 'embedded C', 'computer vision'].map(t => (
+          <span class="copper-tag">{t}</span>
+        ))}
+      </div>
+      <div style="display:flex;gap:14px;">
+        <a href="/projects" style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--cream);background:var(--ink);padding:10px 20px;border-radius:2px;text-decoration:none;">
+          view projects
+        </a>
+        <a href="/TKoduru_Resume.pdf" target="_blank" style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);border:1px solid rgba(58,46,26,0.4);padding:10px 20px;border-radius:2px;text-decoration:none;">
+          download resume
+        </a>
+      </div>
+    </section>
+
+    <!-- ── Projects ── -->
+    <section style="padding:0 40px;margin-top:44px;position:relative;z-index:1;">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px;">
+        <span class="section-num">01 //</span>
+        <span class="serif" style="font-size:20px;color:var(--ink);font-weight:400;font-style:italic;">selected projects</span>
+        <hr class="section-rule" />
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+        {featuredProjects.map(p => <ProjectCard {...p} />)}
+      </div>
+      <div style="margin-top:20px;">
+        <a href="/projects" style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">
+          all projects →
+        </a>
+      </div>
+    </section>
+
+    <!-- ── Experience ── -->
+    <section style="padding:0 40px;margin-top:44px;position:relative;z-index:1;">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px;">
+        <span class="section-num">02 //</span>
+        <span class="serif" style="font-size:20px;color:var(--ink);font-weight:400;font-style:italic;">experience</span>
+        <hr class="section-rule" />
+      </div>
+      <div style="border-top:1px solid var(--rule);">
+        {experience.map(e => (
+          <div style="display:flex;gap:20px;padding:18px 0;border-bottom:1px solid var(--rule);">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted-light);min-width:90px;padding-top:2px;letter-spacing:0.05em;">
+              {e.date}
+            </div>
+            <div>
+              <div style="font-size:14px;color:var(--ink);font-weight:500;margin-bottom:2px;">{e.role}</div>
+              <div style="font-family:var(--font-mono);font-size:13px;color:var(--copper);margin-bottom:4px;">{e.company}</div>
+              <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.5;">{e.detail}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── Writing ── -->
+    <section style="padding:0 40px;margin-top:44px;position:relative;z-index:1;">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px;">
+        <span class="section-num">03 //</span>
+        <span class="serif" style="font-size:20px;color:var(--ink);font-weight:400;font-style:italic;">writing</span>
+        <hr class="section-rule" />
+      </div>
+      <div style="border-top:1px solid var(--rule);">
+        {posts.length === 0 && (
+          <div style="padding:18px 0;border-bottom:1px solid var(--rule);font-family:var(--font-mono);font-size:12px;color:var(--muted);">
+            Nothing yet — but the notebook is open.
+          </div>
+        )}
+        {posts.map(post => (
+          <a href={`/writing/${post.slug}`} style="text-decoration:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--rule);cursor:pointer;">
+              <div>
+                <div class="serif" style="font-size:15px;color:var(--ink);font-style:italic;margin-bottom:3px;">{post.data.title}</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted-light);letter-spacing:0.05em;">
+                  {post.data.date}
+                </div>
+              </div>
+              <span class="copper-tag">{post.data.tag}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <a href="/writing" style="display:block;margin-top:20px;font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">
+        all writing →
+      </a>
+    </section>
+
+    <!-- ── Now ── -->
+    <section style="padding:0 40px;margin-top:44px;position:relative;z-index:1;">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px;">
+        <span class="section-num">04 //</span>
+        <span class="serif" style="font-size:20px;color:var(--ink);font-weight:400;font-style:italic;">now</span>
+        <hr class="section-rule" />
+      </div>
+      <div style="background:var(--cream-card);border:1px solid rgba(140,120,80,0.25);padding:20px 24px;border-radius:2px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;">
+        {[
+          { label: 'building',  val: 'Controls work @ MIT LL. A new PCB in the sketchbook.' },
+          { label: 'reading',   val: "Surely You're Joking, Mr. Feynman" },
+          { label: 'listening', val: '2025 playlist. Brown noise when deep in code.' },
+        ].map(({ label, val }) => (
+          <div>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--copper);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:7px;">{label}</div>
+            <div style="font-family:var(--font-mono);font-size:13px;color:var(--ink);line-height:1.55;">{val}</div>
+          </div>
+        ))}
+      </div>
+      <a href="/now" style="display:block;margin-top:14px;font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">
+        full /now page →
+      </a>
+    </section>
+
+  </div>

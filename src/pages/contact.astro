@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+
+const links = [
+  { label: 'email',    val: 'tkoduru@umich.edu',        href: 'mailto:tkoduru@umich.edu' },
+  { label: 'github',   val: 'github.com/TSKoduru',       href: 'https://github.com/TSKoduru' },
+  { label: 'linkedin', val: 'linkedin.com/in/tskoduru',  href: 'https://linkedin.com/in/tskoduru' },
+];
+---
+
+<Base title="Contact">
+  <div style="position:relative;background:var(--cream);min-height:80vh;">
+    <GridBackground />
+    <div style="max-width:560px;margin:0 auto;padding:52px 40px 80px;position:relative;z-index:1;">
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
+        05 // contact
+      </p>
+      <h1 class="serif" style="font-size:42px;color:var(--ink);font-weight:400;font-style:italic;margin-bottom:16px;">
+        Say hello
+      </h1>
+      <p style="font-family:var(--font-mono);font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:40px;">
+        Whether it's a project idea, a job, or just to talk rockets and PCBs — I'm always happy to hear from people.
+      </p>
+      <hr style="border:none;border-top:1px solid var(--rule);margin-bottom:36px;" />
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        {links.map(({ label, val, href }) => (
+          <a href={href} style="text-decoration:none;display:flex;gap:20px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--copper);letter-spacing:0.1em;text-transform:uppercase;min-width:70px;">
+              {label}
+            </span>
+            <span style="font-family:var(--font-mono);font-size:13px;color:var(--ink);border-bottom:1px solid var(--rule);padding-bottom:2px;">
+              {val}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>

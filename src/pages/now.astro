@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+
+const items = [
+  { label: 'working on',    body: "Controls and embedded systems work at MIT Lincoln Laboratory. Fascinating stuff I can't talk about. Also sketching out a new PCB — a wristwatch with a twist." },
+  { label: 'reading',       body: "Surely You're Joking, Mr. Feynman — somehow I'd never read it. Also working through Orbital Mechanics for Engineering Students by Howard Curtis." },
+  { label: 'listening',     body: '2025 playlist when I\'m moving, brown noise when I\'m deep in code. Recently rediscovered Rosé + Bruno Mars.' },
+  { label: 'thinking about', body: 'The gap between simulation and hardware. How much can you trust a model? When do you just build the thing?' },
+];
+---
+
+<Base title="Now">
+  <div style="position:relative;background:var(--cream);min-height:80vh;">
+    <GridBackground />
+    <div style="max-width:680px;margin:0 auto;padding:52px 40px 80px;position:relative;z-index:1;">
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
+        04 // now
+      </p>
+      <h1 class="serif" style="font-size:42px;color:var(--ink);font-weight:400;font-style:italic;margin-bottom:8px;">
+        What I'm up to
+      </h1>
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:40px;">
+        Last updated: April 2026
+      </p>
+      <hr style="border:none;border-top:1px solid var(--rule);margin-bottom:36px;" />
+
+      {items.map(({ label, body }) => (
+        <div style="margin-bottom:36px;">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--copper);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">
+            {label}
+          </div>
+          <p style="font-family:var(--font-mono);font-size:14px;color:var(--ink-light);line-height:1.75;margin:0;">
+            {body}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</Base>

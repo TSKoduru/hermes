@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+---
+
+<Base title="Writing">
+  <div style="position:relative;background:var(--cream);min-height:80vh;">
+    <GridBackground />
+    <div style="max-width:760px;margin:0 auto;padding:52px 40px;position:relative;z-index:1;">
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
+        03 // writing
+      </p>
+      <h1 class="serif" style="font-size:42px;color:var(--ink);font-weight:400;font-style:italic;margin-bottom:8px;">
+        The Notebook
+      </h1>
+      <p style="font-family:var(--font-mono);font-size:13px;color:var(--muted);margin-bottom:40px;line-height:1.7;">
+        Notes, essays, and things I figured out the hard way.
+      </p>
+
+      <div style="border-top:1px solid var(--rule);">
+        {posts.length === 0 && (
+          <div style="padding:24px 0;font-family:var(--font-mono);font-size:13px;color:var(--muted);">
+            No entries yet. The notebook is warming up.
+          </div>
+        )}
+        {posts.map(post => (
+          <a href={`/writing/${post.slug}`} style="text-decoration:none;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--rule);gap:16px;">
+              <div style="flex:1;">
+                <div class="serif" style="font-size:18px;color:var(--ink);font-style:italic;margin-bottom:6px;line-height:1.3;">
+                  {post.data.title}
+                </div>
+                <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px;">
+                  {post.data.excerpt ?? ''}
+                </div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted-light);letter-spacing:0.05em;">
+                  {post.data.date}
+                </div>
+              </div>
+              <span class="copper-tag" style="flex-shrink:0;margin-top:4px;">{post.data.tag}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div style="margin-top:28px;padding:14px 18px;" class="dashed-cta">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.08em;text-transform:uppercase;">
+          to publish a new post
+        </div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6;">
+          Create a <code style="background:rgba(140,110,60,0.1);padding:1px 5px;border-radius:2px;">.md</code> file in
+          <code style="background:rgba(140,110,60,0.1);padding:1px 5px;border-radius:2px;">src/content/posts/</code>
+          with the frontmatter below, then <code style="background:rgba(140,110,60,0.1);padding:1px 5px;border-radius:2px;">git push</code>.
+        </div>
+        <pre style="margin-top:12px;background:#F5F2EA;border:1px solid var(--rule);padding:12px;font-family:var(--font-mono);font-size:11px;color:var(--ink-light);border-radius:2px;line-height:1.7;">---
+title: "Your title here"
+date: "2026-04-08"
+tag: "note"
+excerpt: "One sentence summary."
+---</pre>
+      </div>
+    </div>
+  </div>
+</Base>

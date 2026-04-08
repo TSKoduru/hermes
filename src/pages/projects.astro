@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+const projects = [
+  { name: 'DIALGA',      type: 'hardware · PCB',        desc: 'A binary watch PCB. Custom schematic, hand-routed traces, ENIG finish. Worn daily.',                              lang: 'KiCad · C',          href: 'https://github.com/TSKoduru/DIALGA' },
+  { name: 'Celestia',    type: 'software · simulation',  desc: 'N-body gravitational simulator with real orbital mechanics and Barnes-Hut tree optimization.',                    lang: 'Python · NumPy',     href: 'https://github.com/TSKoduru/NBodySimulation' },
+  { name: 'Gamehawk',    type: 'software · CV',          desc: 'Automated Word Hunt solver using computer vision and graph search. Real-time.',                                  lang: 'Python · OpenCV',    href: 'https://github.com/TSKoduru/gamehawk' },
+  { name: 'LANTERN',     type: 'software · ML',          desc: 'Lyme disease diagnosis tool. Rapid, accessible, and effective early detection.',                                 lang: 'Python · TensorFlow', href: 'https://github.com/TSKoduru/LANTERN' },
+  { name: 'SIFT',        type: 'software · web',         desc: "Recipe discovery engine. Tell it what's in your fridge and it finds what you can cook.",                         lang: 'React · Node.js',    href: 'https://github.com/TSKoduru/SIFT' },
+  { name: 'YTtoSpotify', type: 'software · utility',     desc: "One-click YouTube playlist → Spotify migration. Because switching platforms shouldn't mean losing your music.",  lang: 'Python',             href: 'https://github.com/TSKoduru/YTtoSpotify' },
+];
+---
+
+<Base title="Projects">
+  <div style="position:relative;background:var(--cream);min-height:80vh;">
+    <GridBackground />
+    <div style="max-width:1000px;margin:0 auto;padding:52px 40px;position:relative;z-index:1;">
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
+        01 // projects
+      </p>
+      <h1 class="serif" style="font-size:42px;color:var(--ink);font-weight:400;font-style:italic;margin-bottom:40px;">
+        The Build Log
+      </h1>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+        {projects.map(p => <ProjectCard {...p} />)}
+      </div>
+    </div>
+  </div>
+</Base>
