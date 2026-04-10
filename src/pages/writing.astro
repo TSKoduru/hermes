@@ -18,7 +18,7 @@ const posts = (await getCollection('posts'))
         The Notebook
       </h1>
       <p style="font-family:var(--font-mono);font-size:13px;color:var(--muted);margin-bottom:40px;line-height:1.7;">
-        Notes, essays, and things I figured out the hard way.
+        Notes, essays, thoughts, grocery lists. Wait, what?
       </p>
 
       <div style="border-top:1px solid var(--rule);">
@@ -46,22 +46,6 @@ const posts = (await getCollection('posts'))
           </a>
         ))}
       </div>
-
-      <div style="margin-top:28px;padding:14px 18px;" class="dashed-cta">
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.08em;text-transform:uppercase;">
-          to publish a new post
-        </div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6;">
-          Create a <code style="background:rgba(140,110,60,0.1);padding:1px 5px;border-radius:2px;">.md</code> file in
-          <code style="background:rgba(140,110,60,0.1);padding:1px 5px;border-radius:2px;">src/content/posts/</code>
-          with the frontmatter below, then <code style="background:rgba(140,110,60,0.1);padding:1px 5px;border-radius:2px;">git push</code>.
-        </div>
-        <pre style="margin-top:12px;background:#F5F2EA;border:1px solid var(--rule);padding:12px;font-family:var(--font-mono);font-size:11px;color:var(--ink-light);border-radius:2px;line-height:1.7;">---
-title: "Your title here"
-date: "2026-04-08"
-tag: "note"
-excerpt: "One sentence summary."
----</pre>
       </div>
     </div>
   </div>

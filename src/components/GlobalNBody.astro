@@ -166,11 +166,9 @@
     update();
   }
 
-  // Astro navigation safety hooks
   document.addEventListener('astro:page-load', start);
   document.addEventListener('astro:after-swap', start);
   window.addEventListener('resize', init);
 
-  // initial boot
   start();
 </script>
