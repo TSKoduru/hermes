@@ -5,9 +5,10 @@ interface Props {
   desc: string;
   lang: string;
   href: string;
+  image?: string; 
 }
 
-const { name, type, desc, lang, href } = Astro.props;
+const { name, type, desc, lang, href, image } = Astro.props;
 ---
 
 <a href={href} target="_blank" rel="noreferrer" style="text-decoration:none;">
@@ -15,6 +16,13 @@ const { name, type, desc, lang, href } = Astro.props;
     <div style="font-family:var(--font-mono);font-size:9px;color:var(--copper);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">
       {type}
     </div>
+    
+    {image && (
+      <div style="margin-bottom:14px; border:1px solid var(--rule); border-radius:2px; overflow:hidden; background:var(--cream);">
+        <img src={image} alt={`Preview of ${name}`} class="notebook-img" style="display:block; width:100%; height:auto;" />
+      </div>
+    )}
+
     <div class="serif" style="font-size:18px;color:var(--ink);font-weight:400;margin-bottom:7px;line-height:1.2;">
       {name}
     </div>
@@ -27,3 +35,18 @@ const { name, type, desc, lang, href } = Astro.props;
     </div>
   </div>
 </a>
+
+<style>
+
+  .notebook-img {
+    mix-blend-mode: multiply;
+    filter: grayscale(100%) contrast(1.2) sepia(20%) hue-rotate(-15deg);
+    opacity: 0.85;
+    transition: opacity 0.3s ease, filter 0.3s ease;
+  }
+  
+  .sketch-card:hover .notebook-img {
+    opacity: 1;
+    filter: grayscale(60%) contrast(1.2) sepia(20%) hue-rotate(-15deg);
+  }
+</style>

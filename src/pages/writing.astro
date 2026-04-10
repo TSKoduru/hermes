@@ -28,7 +28,7 @@ const posts = (await getCollection('posts'))
           </div>
         )}
         {posts.map(post => (
-          <a href={`/writing/${post.slug}`} style="text-decoration:none;">
+          <a href={`/writing/${post.id}`} style="text-decoration:none;">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--rule);gap:16px;">
               <div style="flex:1;">
                 <div class="serif" style="font-size:18px;color:var(--ink);font-style:italic;margin-bottom:6px;line-height:1.3;">

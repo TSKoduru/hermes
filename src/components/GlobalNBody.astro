@@ -1,0 +1,176 @@
+<div id="physics-bg">
+  <canvas id="global-canvas"></canvas>
+</div>
+
+<button id="reset-physics" class="hud-reset">reset orbits</button>
+
+<style>
+  #physics-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  #global-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hud-reset {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 50;
+    pointer-events: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--copper);
+    background: var(--cream-card);
+    border: 1px dashed var(--sketch-stroke);
+    padding: 6px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0px rgba(140, 110, 60, 0.08);
+  }
+
+  .hud-reset:hover {
+    background: var(--copper);
+    color: var(--cream);
+    border-color: var(--copper);
+  }
+
+  @media (max-width: 800px) {
+    #physics-bg,
+    .hud-reset {
+      display: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  let canvas, ctx, resetBtn;
+  let width, height;
+
+  const G = 0.5;
+  const softening = 500;
+
+  let bodies = [];
+  let raf;
+
+  function initDOM() {
+    canvas = document.getElementById('global-canvas');
+    resetBtn = document.getElementById('reset-physics');
+
+    if (!canvas) return false;
+
+    ctx = canvas.getContext('2d');
+    return true;
+  }
+
+  function init() {
+    if (!initDOM()) return;
+
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const cx = width / 2;
+    const cy = height / 2 + 150;
+
+    bodies = [
+      { x: cx, y: cy, vx: 0, vy: 0, mass: 3000, radius: 4, color: '#36454F', path: [] },
+      { x: cx + 180, y: cy, vx: 0, vy: -2.8, mass: 8, radius: 2.5, color: '#C87941', path: [] },
+      { x: cx - 250, y: cy + 50, vx: 1.5, vy: 2.5, mass: 12, radius: 3, color: '#7A6A50', path: [] },
+      { x: cx + 100, y: cy - 150, vx: -3.5, vy: 0, mass: 4, radius: 1.5, color: '#C87941', path: [] },
+      { x: cx - 120, y: cy - 180, vx: 2.5, vy: -1, mass: 6, radius: 2, color: '#B0965A', path: [] }
+    ];
+
+    if (resetBtn) {
+      resetBtn.onclick = init;
+    }
+  }
+
+  function update() {
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalAlpha = 1;
+
+    for (let i = 0; i < bodies.length; i++) {
+      for (let j = i + 1; j < bodies.length; j++) {
+        let b1 = bodies[i];
+        let b2 = bodies[j];
+
+        let dx = b2.x - b1.x;
+        let dy = b2.y - b1.y;
+
+        let distSq = dx * dx + dy * dy + softening;
+        let dist = Math.sqrt(distSq);
+
+        let force = (G * b1.mass * b2.mass) / distSq;
+        let ax = (force * dx) / dist;
+        let ay = (force * dy) / dist;
+
+        b1.vx += ax / b1.mass;
+        b1.vy += ay / b1.mass;
+        b2.vx -= ax / b2.mass;
+        b2.vy -= ay / b2.mass;
+      }
+    }
+
+    bodies.forEach((b) => {
+      b.x += b.vx;
+      b.y += b.vy;
+
+      b.path.push({ x: b.x, y: b.y });
+      if (b.path.length > 120) b.path.shift();
+
+      if (b.path.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(b.path[0].x, b.path[0].y);
+
+        for (let k = 1; k < b.path.length; k++) {
+          ctx.lineTo(b.path[k].x, b.path[k].y);
+        }
+
+        ctx.strokeStyle = b.color;
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.35;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.fillStyle = b.color;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    raf = requestAnimationFrame(update);
+  }
+
+  function start() {
+    cancelAnimationFrame(raf);
+    init();
+    update();
+  }
+
+  // Astro navigation safety hooks
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:after-swap', start);
+  window.addEventListener('resize', init);
+
+  // initial boot
+  start();
+</script>
