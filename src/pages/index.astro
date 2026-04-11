@@ -5,16 +5,67 @@ import SignalTrace from '../components/SignalTrace.astro';
 import GlobalNBody from '../components/GlobalNBody.astro'; 
 
 const experience = [
-{ date: 'Fall 2026 - present',   role: 'Member of Technical Staff',  company: 'xAI', detail: 'LLM Research.' },
-  { date: 'Summer 2026',   role: 'Flight Software Intern',  company: 'Hermeus', detail: 'Hypersonics work. Flight software for Quarterhorse.' },
-  { date: 'Summer 2025',   role: 'Software / Controls Intern',  company: 'MIT Lincoln Laboratory', detail: 'Advanced defense research. Controls and embedded systems.' },
-  { date: 'Spring 2025', role: 'Software / Avionics Intern',  company: 'SpaceX',                 detail: 'Flight software and avionics systems for orbital launch vehicles.' },
-  { date: 'Summer 2024',  role: 'Software Engineering Intern', company: 'Kitware',                detail: 'Automated data gathering pipelines using Segment Anything and CLIP models.' },
+  // { date: 'Fall 2026 - present',   role: 'Member of Technical Staff',  company: 'xAI', detail: 'LLM research.' },
+  // { date: 'Summer 2026',   role: 'Flight Software Intern',  company: 'Hermeus', detail: 'Hypersonics work. Flight software for Quarterhorse.' },
+  // { date: 'Fall 2026 - present',   role: 'Firmware Engineer',  company: 'Anduril', detail: 'Autonomous robotics.' },
+  // { date: 'Fall 2026 - present',   role: 'Software Engineer',  company: 'Google', detail: 'LLM research.' },
+  { date: 'Summer 2025',   role: 'Software / Controls Intern',  company: 'MIT', detail: 'Advanced defense research at Lincoln Labs. Controls and embedded systems.' },
+  { date: 'Spring 2025', role: 'Software / Avionics Intern',  company: 'SpaceX',                 detail: 'Flight software and avionics systems for Falcon.' },
+  { date: 'Summer 2024',  role: 'Software Engineering Intern', company: 'Kitware',                detail: 'Research for the AFRL into long-range threat identification.' },
 ];
 const skills = [
-  { category: "Hardware & Controls", items: ["KiCad", "Embedded C", "C++", "MATLAB", "PCB Design", "Soldering"] },
-  { category: "Software & AI", items: ["Python", "Next.js", "Astro", "OpenCV", "Deep Learning", "RAG"] },
-  { category: "Aerospace", items: ["Astrodynamics", "Orbital Mechanics", "Fluid Dynamics", "Simulink"] }
+  {
+    category: "Embedded & Hardware",
+    items: [
+      "C/C++",
+      "STM32",
+      "FreeRTOS",
+      "PCB Design",
+      "KiCad / Altium",
+      "Verilog / VHDL",
+      "I2C / SPI / UART",
+      "Hardware Debugging",
+      "Linux",
+      "Bash",
+    ]
+  },
+  {
+    category: "Robotics & Controls",
+    items: [
+      "ROS / ROS2",
+      "ArduPilot",
+      "PX4",
+      "MAVLink",
+      "Gazebo",
+      "Control Systems",
+      "State Estimation",
+      "OpenCV",
+    ]
+  },
+  {
+    category: "Aerospace",
+    items: [
+      "Orbital Mechanics",
+      "Flight Dynamics",
+      "Astrodynamics",
+      "GNC",
+      "MATLAB / Simulink",
+    ]
+  },
+  {
+    category: "Software",
+    items: [
+      "Python",
+      "TypeScript",
+      "React / Next.js",
+      "Node.js",
+      "REST APIs",
+      "SQL",
+      "Docker",
+      "AWS",
+      "Git",
+    ]
+  },
 ];
 ---
 
@@ -119,16 +170,22 @@ const skills = [
               <span class="serif" style="font-size: 20px; color: var(--ink); font-weight: 400; font-style: italic;">skills & tools</span>
               <hr class="section-rule" />
             </div>
+          
             <div class="skills-card">
-              {skills.map(skill => (
-                <div>
-                  <div style="font-size: 13px; color: var(--ink); font-weight: 500; margin-bottom: 12px; border-bottom: 1px solid var(--rule); padding-bottom: 6px;">
-                    {skill.category}
-                  </div>
-                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    {skill.items.map(item => (
-                      <span class="copper-tag interactive-tag">{item}</span>
-                    ))}
+              {skills.map((skill, i) => (
+                <div class="skills-group" data-open={"false"}>
+                  <button class="skills-group-header">
+                    <span>{skill.category}</span>
+                    <span class="skills-chevron">↓</span>
+                  </button>
+                  <div class="skills-group-body">
+                    <div class="skills-group-inner">
+                      <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0 4px;">
+                        {skill.items.map(item => (
+                          <span class="copper-tag interactive-tag">{item}</span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -289,4 +346,63 @@ const skills = [
   .exp-node:hover .exp-detail-wrapper {
     grid-template-rows: 1fr;
   }
+
+  .skills-group-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 500;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.skills-group-header:hover {
+  color: var(--copper);
+}
+
+.skills-chevron {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--copper);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+.skills-group[data-open="true"] .skills-chevron {
+  transform: rotate(180deg);
+}
+
+.skills-group-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skills-group[data-open="true"] .skills-group-body {
+  grid-template-rows: 1fr;
+}
+
+.skills-group-inner {
+  overflow: hidden;
+}
 </style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('.skills-group-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const group = header.closest('.skills-group');
+        const isOpen = group.getAttribute('data-open') === 'true';
+        group.setAttribute('data-open', isOpen ? 'false' : 'true');
+      });
+    });
+  });
+</script>
