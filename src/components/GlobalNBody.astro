@@ -2,7 +2,9 @@
   <canvas id="global-canvas"></canvas>
 </div>
 
-<button id="reset-physics" class="hud-reset">reset orbits</button>
+<div class="hud-container">
+  <button id="reset-physics" class="hud-reset">reset orbits</button>
+</div>
 
 <style>
   #physics-bg {
@@ -22,11 +24,28 @@
     height: 100%;
   }
 
-  .hud-reset {
+  .hud-container {
     position: fixed;
     bottom: 24px;
     right: 24px;
     z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hud-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .hud-reset {
     pointer-events: auto;
     font-family: var(--font-mono);
     font-size: 10px;
@@ -50,7 +69,7 @@
 
   @media (max-width: 800px) {
     #physics-bg,
-    .hud-reset {
+    .hud-container {
       display: none !important;
     }
   }
@@ -66,6 +85,7 @@
   let bodies = [];
   let raf;
 
+  let mouse = { x: -1000, y: -1000, mass: 15000, active: false };
 
   function rand(min, max) {
     return Math.random() * (max - min) + min;
@@ -120,6 +140,21 @@
     if (resetBtn) {
       resetBtn.onclick = init;
     }
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mousedown', () => mouse.active = true);
+    window.addEventListener('mouseup', () => mouse.active = false);
+    
+    window.addEventListener('touchstart', (e) => {
+      mouse.active = true;
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    });
+    window.addEventListener('touchend', () => mouse.active = false);
   }
 
   function update() {
@@ -127,6 +162,30 @@
 
     ctx.clearRect(0, 0, width, height);
     ctx.globalAlpha = 1;
+
+    if (mouse.active) {
+      for (let i = 0; i < bodies.length; i++) {
+        let b = bodies[i];
+        let dx = mouse.x - b.x;
+        let dy = mouse.y - b.y;
+
+        let distSq = dx * dx + dy * dy + softening;
+        let dist = Math.sqrt(distSq);
+
+        let force = (G * b.mass * mouse.mass) / distSq;
+        let ax = (force * dx) / dist;
+        let ay = (force * dy) / dist;
+
+        b.vx += ax / b.mass;
+        b.vy += ay / b.mass;
+      }
+
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 6, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(200, 121, 65, 0.6)'; 
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
 
     for (let i = 0; i < bodies.length; i++) {
       for (let j = i + 1; j < bodies.length; j++) {

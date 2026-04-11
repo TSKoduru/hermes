@@ -15,7 +15,9 @@ const links = [
   <div style="position:relative;background:var(--cream);min-height:100vh;overflow:hidden;">
     <GridBackground />
     
-    <div id="physics-container" class="envelope-container"></div>
+    <div id="physics-container" class="envelope-container">
+      <canvas id="mouse-canvas"></canvas>
+    </div>
 
     <div style="max-width:560px;margin:0 auto;padding:52px 40px 80px;position:relative;z-index:1;">
       <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
@@ -55,6 +57,7 @@ const links = [
 <script>
   document.addEventListener('astro:page-load', () => {
 
+    
     const emailLink = document.querySelector('.email-copy-link');
     
     if (emailLink) {
@@ -79,9 +82,11 @@ const links = [
     if (typeof Matter === 'undefined') return;
 
     const container = document.getElementById('physics-container');
-    if (!container) return;
+    const mouseCanvas = document.getElementById('mouse-canvas');
+    if (!container || !mouseCanvas) return;
 
-    const { Engine, Runner, Bodies, Composite, Events } = Matter;
+    const hint = document.getElementById('play-hint');
+    const { Engine, Runner, Bodies, Composite, Events, Mouse, MouseConstraint } = Matter;
     const engine = Engine.create({
       positionIterations: 4,
       velocityIterations: 4
@@ -90,6 +95,9 @@ const links = [
     let width = container.clientWidth;
     let height = container.clientHeight;
 
+    mouseCanvas.width = width;
+    mouseCanvas.height = height;
+
     const groundOffset = 120;
     
     let ground = Bodies.rectangle(width / 2, height - groundOffset, width * 2, 50, { isStatic: true });
@@ -97,6 +105,31 @@ const links = [
     let leftWall = Bodies.rectangle(-25, height / 2, 50, height * 2, { isStatic: true });
 
     Composite.add(engine.world, [ground, rightWall, leftWall]);
+
+    const mouse = Mouse.create(mouseCanvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse,
+      constraint: {
+        stiffness: 0.2,
+        damping: 0.1,
+        render: { visible: false }
+      }
+    });
+    Composite.add(engine.world, mouseConstraint);
+
+    Events.on(mouseConstraint, 'startdrag', () => {
+      container.style.cursor = 'grabbing';
+    });
+    Events.on(mouseConstraint, 'enddrag', () => {
+      container.style.cursor = 'grab';
+    });
+    Events.on(mouseConstraint, 'mousemove', (e) => {
+      if (!mouseConstraint.body) {
+        const bodies = Composite.allBodies(engine.world).filter(b => !b.isStatic);
+        const hovered = bodies.some(b => Matter.Query.point([b], e.mouse.position).length > 0);
+        container.style.cursor = hovered ? 'grab' : 'default';
+      }
+    });
 
     const runner = Runner.create();
     Runner.run(runner, engine);
@@ -115,7 +148,8 @@ const links = [
       const body = Bodies.rectangle(startX, startY, envelopeWidth, envelopeHeight, {
         restitution: 0.4, 
         friction: 0.8,
-        density: 0.04
+        density: 0.04,
+        label: 'envelope'
       });
 
       const initialAngle = (Math.random() - 0.5) * Math.PI; 
@@ -141,46 +175,35 @@ const links = [
         const { body, el } = envelopeElements[i];
         const x = body.position.x - (envelopeWidth / 2);
         const y = body.position.y - (envelopeHeight / 2);
+
+        const isGrabbed = mouseConstraint.body === body;
+        el.style.opacity = isGrabbed ? '1' : '';
         el.style.transform = `translate(${x}px, ${y}px) rotate(${body.angle}rad)`;
       }
     });
 
-    // --- 3. The "Artificial Box" Corral Logic ---
     window.addEventListener('resize', () => {
       width = container.clientWidth;
       height = container.clientHeight;
+
+      mouseCanvas.width = width;
+      mouseCanvas.height = height;
       
-      // Update the invisible walls
       Matter.Body.setPosition(ground, { x: width / 2, y: height - groundOffset });
       Matter.Body.setPosition(rightWall, { x: width + 25, y: height / 2 });
       Matter.Body.setPosition(leftWall, { x: -25, y: height / 2 });
 
-      // Check all envelopes and push them back into the box if they were caught outside
       envelopeElements.forEach(({ body }) => {
         let newX = body.position.x;
         let newY = body.position.y;
         let outOfBounds = false;
 
-        // If caught outside the right wall
-        if (newX > width) {
-          newX = width - 40;
-          outOfBounds = true;
-        }
-        // If caught outside the left wall
-        if (newX < 0) {
-          newX = 40;
-          outOfBounds = true;
-        }
-        // If caught below the floor
-        if (newY > height - groundOffset) {
-          newY = height - groundOffset - 40;
-          outOfBounds = true;
-        }
+        if (newX > width) { newX = width - 40; outOfBounds = true; }
+        if (newX < 0) { newX = 40; outOfBounds = true; }
+        if (newY > height - groundOffset) { newY = height - groundOffset - 40; outOfBounds = true; }
 
         if (outOfBounds) {
-          // Teleport them back inside safely
           Matter.Body.setPosition(body, { x: newX, y: newY });
-          // Kill their momentum so they don't glitch through the walls
           Matter.Body.setVelocity(body, { x: 0, y: 0 });
         }
       });
@@ -293,8 +316,18 @@ const links = [
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
     z-index: 0;
+    cursor: default;
+  }
+
+  #mouse-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: all;
   }
 
   :global(.falling-envelope) {
@@ -304,5 +337,8 @@ const links = [
     width: 45px;
     height: 30px;
     will-change: transform;
+    transition: opacity 0.1s ease;
+    pointer-events: none; 
   }
+
 </style>
